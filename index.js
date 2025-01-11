@@ -22,7 +22,7 @@ app.use((req,res,next)=>{
     if(token != null){
         token = token.replace("Bearer ", "")
         
-        jwt.verify(token,"kv-secert-89!",
+        jwt.verify(token,process.env.JWT_SECRET,
             (err,decoded)=>{
                 if(!err){
                     //console.log(decoded)
