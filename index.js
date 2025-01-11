@@ -37,7 +37,7 @@ app.use((req,res,next)=>{
 });
 
 // strat db conection
-let mongourl = process.dotenv.MONGO_URL;
+let mongourl = process.env.MONGO_URL;
 
 mongoose.connect(mongourl)
 
