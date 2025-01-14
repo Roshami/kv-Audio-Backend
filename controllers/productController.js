@@ -12,7 +12,7 @@ export async function addProduct(req, res) {
     }
 
     //check you are admin or not
-    if(req.user.role != "admin"){
+    if(req.user.role != "Admin"){
         res.status(403).json({
             message: "You are not authorized to perform this action"
         })
@@ -47,4 +47,33 @@ export async function addProduct(req, res) {
             })
         }
     )*/
+}
+
+export async function getProducts(req,res) {
+
+    let isAdmin = false;
+
+    if(req.user != null){
+        if(req.user.role == "Admin"){
+            isAdmin = true;
+        }
+    }
+
+    try{
+
+        if(isAdmin){
+            const products = await Product.find();
+        res.json(products);
+        }else{
+            const products = await Product.find({
+                avalibility: true
+            });
+            res.json(products);
+            return;
+        }
+    }catch(e){
+        res.status(500).json({
+            message: "Failed to get products"
+        })
+    }
 }
