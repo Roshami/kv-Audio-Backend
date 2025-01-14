@@ -1,6 +1,6 @@
 import Product from "../models/product.js";
 
-export function addProduct(req, res) {
+export async function addProduct(req, res) {
     console.log(req.user) // token
 
     // product is not created without token beacuse of this code
@@ -20,7 +20,21 @@ export function addProduct(req, res) {
 
     const data = new Product(req.body);
     const newProduct = new Product(data);
-    newProduct.save().then(
+    
+    //with acync await
+    try{
+        await newProduct.save();
+        res.json({
+            message : "Product added Successfully"
+        })
+    }catch{
+        res.status(500).json({
+            error: "Product request failer"
+        })
+    }
+
+    //without acync await
+    /*newProduct.save().then(
         () => {
             res.json({
                 message: "Product Added Successfully"
@@ -32,5 +46,5 @@ export function addProduct(req, res) {
                 error: "Product addition failed"
             })
         }
-    )
+    )*/
 }
