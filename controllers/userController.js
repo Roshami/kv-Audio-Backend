@@ -78,3 +78,15 @@ export function loginUser(req, res) {
     )
 
 }
+
+export function isItAdmin(req){
+    let isAdmin = false;
+
+    if(req.user != null){
+        if(req.user.role == "Admin"){
+            isAdmin = true;
+        }
+    }
+
+    return isAdmin;
+}
