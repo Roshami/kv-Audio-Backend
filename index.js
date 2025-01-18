@@ -6,6 +6,7 @@ import productRouter from "./routes/productRouter.js";
 import jwt, { decode } from "jsonwebtoken";
 import dotenv from "dotenv";
 import reviewRouter from "./routes/reviewRouter.js";
+import inquiryRouter from "./routes/inquiryRouter.js";
 
 //loding enviroment variable
 dotenv.config();
@@ -48,9 +49,10 @@ connection.once("open", () => {
     console.log("MongoDB connection established succesfully")
 })
 
-app.use("/api/users", userRouter)
-app.use("/api/products", productRouter)
-app.use("/api/reviews", reviewRouter)
+app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
+app.use("/api/reviews", reviewRouter);
+app.use("/api/inquiries", inquiryRouter);
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000")
