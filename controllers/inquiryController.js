@@ -17,7 +17,7 @@ export async function addInquiry(req,res) {
             if(inquiries.length == 0){
                 id = 1;
             }else{
-                id = inquiries[0].id + 1
+                id = inquiries[0].id + 1;
             }
 
             data.id = id;
@@ -41,18 +41,19 @@ export async function addInquiry(req,res) {
 export async function getInquiries(req,res) {
     try{
         if(isItCustomer(req)){
-            const inquires = await Inquiry.find({
+            const inquiries = await Inquiry.find({
                 email:req.user.email
             });
-            res.json(inquires);
+            res.json(inquiries);
         }else if(isItAdmin(req)){
-            const inquires = await Inquiry.find();
-            res.json(inquires);
+            const inquiries = await Inquiry.find();
+            res.json(inquiries);
             return;
         }else{
             res.status(401).json({
                 message: "You are not authorized to perform this action"
             })
+            return;
         }
     }catch(e){
         res.status(500).json({
@@ -72,7 +73,7 @@ export async function deleteInquiry(req,res) {
             })
 
             return
-        }else if(isItCustomer){
+        }else if(isItCustomer(req)){
             const id =req.params.id;
 
             const inquiry = await Inquiry.findOne({id:id});
@@ -97,7 +98,7 @@ export async function deleteInquiry(req,res) {
 
             }
         }else{
-            res.status(401).json({
+            res.status(403).json({
                 message: "You are not authorized to perform this action"
             })
             return
@@ -137,6 +138,7 @@ export async function updateInquiry(req,res) {
                     res.json({
                         message :"Inquiry update successfully"
                     })
+                    return
                 }else{
                     res.status(403).json({
                         message :"You are not authorized to perform this action"

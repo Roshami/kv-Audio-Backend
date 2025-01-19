@@ -1,3 +1,4 @@
+import { response } from "express";
 import mongoose from "mongoose";
 
 const inquirySchema = new mongoose.Schema({
@@ -20,7 +21,8 @@ const inquirySchema = new mongoose.Schema({
     },
     date :{
         type:Date,
-        default:Date.now
+        required : true,
+        default:Date.now()
     },
     response:{
         type:String,
