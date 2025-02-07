@@ -34,7 +34,7 @@ export function loginUser(req, res) {
 
     User.findOne({
         email: data.email,
-        password: data.password
+       /*password: data.password*/
     }).then(
         (user) => {
             /*res.json({
@@ -44,7 +44,7 @@ export function loginUser(req, res) {
 
             if (user == null) {
                 res.status(400).json({
-                    message: "Usr not found"
+                    error: "User not found"
                 });
             } else {
                 /*res.json({
@@ -63,12 +63,12 @@ export function loginUser(req, res) {
                         profilePicture : user.profilePicture,
                         phone : user.phone
                     },process.env.JWT_SECRET) 
-                    res.json({
+                    res.status(200).json({
                         message: "Login successfuly",
                         token : token
                     })
                 }else{
-                    res.json({
+                    res.status(400).json({
                         error : "Login failer"
                     })
                 }
