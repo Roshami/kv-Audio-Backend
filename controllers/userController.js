@@ -33,7 +33,8 @@ export function loginUser(req, res) {
     const data = req.body
 
     User.findOne({
-        email: data.email
+        email: data.email,
+        password: data.password
     }).then(
         (user) => {
             /*res.json({
