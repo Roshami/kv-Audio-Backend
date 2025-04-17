@@ -2,6 +2,7 @@ import User from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import e from "express";
 
 dotenv.config();
 
@@ -168,6 +169,16 @@ export async function blockOrUnblockUser(req,res){
                 message: "Failed to get user"
             })
         }
+    }else{
+        res.status(401).json({
+            message: "Unauthorized to perform this action"
+        })
+    }
+}
+
+export function getUser(req,res){
+    if(req.user != null){
+        res.json(req.user);
     }else{
         res.status(401).json({
             message: "Unauthorized to perform this action"
