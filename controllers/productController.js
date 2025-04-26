@@ -147,3 +147,33 @@ export async function getProduct(req,res) {
         })
     }
 }
+
+export async function searchAndFilterProduct(req,res) {
+    try{
+        console.log("backend "+req.query)
+        const { category, search } = req.query;
+
+        let filter = {};
+
+        // Filter by category if provided
+        if (category !== "all") {
+            filter.category = category; 
+        }
+
+        // Search by name if provided
+        if (search) {
+            filter.name = { 
+                $regex: search, 
+                $options: 'i' 
+            }; // 'i' for case insensitive
+        }
+
+        const products = await Product.find(filter);
+
+        res.status(200).json(products);
+    }catch(e){
+        res.status(500).json({
+            message: "Failed to get products"
+        })
+    }
+}
