@@ -1,3 +1,4 @@
+import { decode } from "jsonwebtoken";
 import Review from "../models/reviews.js";
 
 export function addReview(req, res) {
@@ -8,7 +9,30 @@ export function addReview(req, res) {
         return
     }
 
-    const data = req.body;
+    if (req.user.role != "Addmin") {
+        res.status(403).json({
+            message: "You are not authorized to add a review"
+        })
+        return
+    }
+
+    if (req.user !== null) {
+        const decode = jwt.decode({
+            firstName: req.user.firstName,
+            lastName: req.user.lastName,
+            email: req.user.email,
+            profilePicture: req.user.profilePicture
+        }, process.env.JWT_SECRET);
+
+        if (decode == null) {
+            res.status(401).json({
+                message: "Please login and try again"
+            })
+            return
+        }        
+    }
+
+    const data = decode;
 
     data.name = req.user.firstName + " " + req.user.lastName
     data.profilePicture = req.user.profilePicture
