@@ -37,7 +37,7 @@ export function getReviews(req, res) {
 
     if (user == null || user.role != "Admin") {
         Review.find({
-            isApproved: true
+            status: "Approved"
         }).then(
             (reviews) => {
                 res.json(reviews)
