@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import Review from "../models/reviews.js";
 
 export async function addReview(req, res) {
@@ -56,7 +55,7 @@ export function getReviews(req, res) {
 }
 
 export function deletReview(req, res) {
-    const email = req.params.email;
+    const reviewID = req.params.reviewId;
 
     if (req.user == null) {
         res.status(401).json({
@@ -65,7 +64,7 @@ export function deletReview(req, res) {
     }
 
     if (req.user.role == "Admin") {
-        Review.deleteOne({ email: email }).then(() => {
+        Review.deleteOne({ _id: reviewID }).then(() => {
             res.json({
                 message: "Review deleted successfully"
             })
@@ -82,7 +81,7 @@ export function deletReview(req, res) {
     if(req.user.role == "Customer"){
 
         if(req.user.email == email){
-            Review.deleteOne({ email: email }).then(() => {
+            Review.deleteOne({ _id: reviewID }).then(() => {
                 res.json({
                     message: "Review deleted successfully"
                 })
@@ -102,7 +101,8 @@ export function deletReview(req, res) {
 }
 
 export function approvedReview(req,res){
-    const email = req.params.email;
+    const reviewID = req.params.reviewId;
+    const status = req.body.status;
 
     if(req.user == null){
         res.status(401).json({
@@ -113,18 +113,22 @@ export function approvedReview(req,res){
     if(req.user.role == "Admin"){
         Review.updateOne(
             { 
-                email: email //who
+                _id: reviewID //who
             }, 
             { 
-                isApproved: true //what is update
+                status: status //what is update
             } 
         ).then(() => {
-            res.json({
+            res.status(200).json({
                 message: "Review approved successfully"
             })
-        }).catch({
-            message: "Review approval failed"
-        })
+        }).catch((err) => {
+            console.error(err);
+            res.status(500).json({ 
+                message: "Review approval failed" 
+            });
+        });
+        
     }else{
         res.status(403).json({
             message: "You are not and admin, only admins can approved the reviews"

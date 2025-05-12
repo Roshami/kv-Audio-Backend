@@ -27,10 +27,10 @@ const reviewsSchma = new mongoose.Schema({
         required:true,
         default : "https://www.shutterstock.com/image-vector/user-profile-icon-vector-avatar-600nw-2247726673.jpg"
     },
-    isApproued :{
-        type:Boolean,
+    status :{
+        type: String,
         required :true,
-        default:false
+        default:"Pending"
     }
 })
 
